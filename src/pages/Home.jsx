@@ -7,15 +7,15 @@ import axios from "axios";
 
 const Home = () => {
   //  https://api.github.com/users/mtapptech
-  const [query, setQuery] = useState("mtapptech");
+  //const [query, setQuery] = useState("mtapptech");
   const [dataAPI, setDataAPI] = useState("");
   const [error, setError] = useState(false);
-  const url = `https://api.github.com/users/${query}`;
+  //const url = `https://api.github.com/users/${query}`;
 
-  const getData = async () => {
+  const getData = async (query) => {
     try {
-      const { data } = await axios.get(url);
-      console.log(data.avatar_url);
+      const { data } = await axios.get(`https://api.github.com/users/${query}`);
+      console.log(data);
       setDataAPI(data);  //setDataAPI(data.avatar_url);
       setError(false);
     } catch (error) {
@@ -23,17 +23,17 @@ const Home = () => {
     }
   };
   useEffect(() => {
-    getData();
+   // getData("mtapptech");
   }, []);
 
   return (
     <Container>
-      <InputSearch />
-      <UserInfo />
+      <InputSearch getData={getData} />
+      
       {error === true ? 
       (<Row className="justify-content-center h-25 w-100"><Image src={NotFound} className="h-25 w-50" alt="User not found" /></Row>) 
       : 
-      (<Row className="justify-content-center h-25 w-100"><Image src={dataAPI.avatar_url} className="h-25 w-50" alt="User not found" /></Row>) 
+      (<UserInfo dataAPI={dataAPI} />) 
       }
     </Container>
   );
